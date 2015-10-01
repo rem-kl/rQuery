@@ -1,11 +1,17 @@
 (function () {
 
     $ = function (selector) {
-        // make sure its called correctly e.g. the calling object is not Window
         if ( !(this instanceof $) ) {
             return new $(selector);
         }
-        var elements = document.querySelectorAll(selector);
+        var elements;
+        // check if the selector is a string
+        if (typeof selector === 'string') {
+            elements = document.querySelectorAll(selector);
+        }
+        else {
+            elements = selector;
+        }
         for (var i = 0; i < elements.length; i++) {
             this[i] = elements[i];
         }
@@ -82,7 +88,7 @@
     });
 
 
-    // EXTEND $ again with methods to have jQuery-like utilizing core functionality implemented above
+    // EXTEND '$' again with methods to have jQuery-like utilizing core functionality implemented above
     $.extend($.prototype, {
 
         // HTML: Get an elements inner-html, or set a element inner-html
@@ -117,11 +123,29 @@
         },
 
 
-        // TO DO: Finish these methods
-        text: function (newText) {
+        // TEXT: Get or set the text INSIDE a HTML element (escapes any mark-up) -- NEED TO FIX THIS
+        text: function(newText) {
+            if (arguments.length) {
+                this.html("");
+                return $.each(this, function(i, element) {
+                    var textNode = document.createTextNode(newText);
+                    element.appendChild(textNode);
+                });
+            }
+            else {
+                return getText(this[0].childNodes);
+            }
         },
-
+        
+        // FIND: Returns a list of all the child nodes of the selected element
+        // e.g. $('div').find('img'); returns an array of all images inside all divs bound to an instance of '$'
         find: function (selector) {
+            var elements = [];
+            $.each(this, function(i, element) {
+                var els = element.querySelectorAll(selector);
+                [].push.apply(elements, els);
+            });
+            return $(elements);
         },
 
         next: function () {
