@@ -148,7 +148,20 @@
             return $(elements);
         },
 
+        // NEXT: Returns a element - not a text node - that is 'next' to the calling element (next sibling)
         next: function () {
+            var elements = [];
+            $.each(this, function(i, element ) {
+                var current = element.nextSibling;
+                while (current && current.nodeType !== 1) {
+                    current = current.nextSibling;
+                }
+
+                if (current) {
+                    elements.push(current);
+                }
+            });
+            return $(elements);
         },
 
         prev: function () {
