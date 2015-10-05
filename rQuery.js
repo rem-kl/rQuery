@@ -1,11 +1,13 @@
 (function () {
 
     $ = function (selector) {
+
         if ( !(this instanceof $) ) {
             return new $(selector);
         }
+
         var elements;
-        // check if the selector is a string
+
         if (typeof selector === 'string') {
             elements = document.querySelectorAll(selector);
         }
@@ -28,7 +30,7 @@
         return target;
     };
 
-    // Static method to check if an object behaves like an array (has items / length)
+    // STATIC METHODS
     var isArrayLike = function (obj) {
         if (typeof obj.length === 'number') {
             if (obj.length === 0) { //empty array-like object
@@ -40,6 +42,21 @@
         }
         return false;
     };
+
+    // Returns the inner text of a single node e.g $(#uniqueElement), or the text of multiple elements e.g. $(li)
+    var getText = function(childNodes) {
+        var text = "";
+        $.each(childNodes, function(i, child) {
+            if (child.nodeType === 3) {
+                text += child.nodeValue;
+            }
+            else {
+                text += getText(child.childNodes);
+            }
+        });
+        return text;
+    };
+
 
     // Extend '$' with core functionality
     $.extend($, {
@@ -87,7 +104,6 @@
         }
     });
 
-
     // EXTEND '$' again with methods to have jQuery-like utilizing core functionality implemented above
     $.extend($.prototype, {
 
@@ -122,7 +138,6 @@
             }
         },
 
-
         // TEXT: Get or set the text INSIDE a HTML element (escapes any mark-up) -- NEED TO FIX THIS
         text: function(newText) {
             if (arguments.length) {
@@ -151,8 +166,9 @@
         // NEXT: Returns a element - not a text node - that is 'next' to the calling element (next sibling)
         next: function () {
             var elements = [];
-            $.each(this, function(i, element ) {
+            $.each(this, function(i, element) {
                 var current = element.nextSibling;
+                // if its a DOM node this while loop gets skipped, and it goes straight to being pushed onto the array
                 while (current && current.nodeType !== 1) {
                     current = current.nextSibling;
                 }
@@ -161,22 +177,64 @@
                     elements.push(current);
                 }
             });
+
             return $(elements);
         },
 
+        // PREVIOUS: Same as 'next' but in the opposite direction
         prev: function () {
+            var elements = [];
+            $.each(this, function(i, element) {
+                var current = element.previousSibling;
+                while (current && current.nodeType !== 1) {
+                    current = current.previousSibling;
+                }
+                if (current) {
+                    elements.push(current);
+                }
+            });
+
+            return $(elements);
         },
 
-        parent: function () {
+        parent: function() {
+
         },
 
         children: function () {
         },
 
+        // ATTR: Read and write attribute (e.g. ID's and classnames) properties on an element
         attr: function (attrName, value) {
+            // Setting attribute
+            if (arguments.length > 1) {
+                return $.each(this, function(i, element) {
+                    element.setAttribute(attrName, value);
+                });
+            }
+            // Getting attribute
+            else {
+                if (this[0]) {
+                    return this[0].getAttribute(attrName);
+                }
+            }
         },
 
+        // CSS: Read and write CSS Styles on an element.
         css: function (cssPropName, value) {
+            // Setting CSS style
+            if (arguments.length > 1) {
+                return $.each(this, function(i, element) {
+                    element.style[cssPropName] = value;   // add a new value to elements 'style' attribute
+                });
+            }
+            // returning CSS style
+            else {
+                if (this[0]) {
+                    return document.defaultView.getComputedStyle(this[0])
+                        .getPropertyValue(cssPropName);
+                }
+            }
         },
 
         width: function () {
