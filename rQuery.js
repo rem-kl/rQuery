@@ -172,7 +172,6 @@
                 while (current && current.nodeType !== 1) {
                     current = current.nextSibling;
                 }
-
                 if (current) {
                     elements.push(current);
                 }
@@ -237,21 +236,31 @@
             }
         },
 
+        // WIDTH: Returns the width of the element (minus the padding) in the box model
         width: function () {
+            var clientWidth = this[0].clientWidth;
+            var leftPadding = this.css("padding-left"),
+                rightPadding = this.css("padding-right");
+
+            return clientWidth - parseInt(leftPadding)
+                    - parseInt(rightPadding);
         },
 
+        // OFFSET: Returns the position of an element in the page
         offset: function () {
-            var offset = this[0].getBoundingClientRect();
+            var offset = this[0].getBoundingClientRect();    // gets the offset relative to the viewport
             return {
                 top: offset.top + window.pageYOffset,
-                left: offset.left + window.pageXOffset
+                left: offset.left + window.pageXOffset  // returns offset that takes into account how far down you have already scrolled
             };
         },
 
         hide: function () {
+            this.css("display", "none");
         },
 
         show: function () {
+            this.css("display", "");
         },
 
         // Events
@@ -272,6 +281,7 @@
 
             return $(elements);
         },
+        
         on: function (eventType, selector, handler) {
             return this.bind(eventType, function (ev) {
                 var cur = ev.target;
