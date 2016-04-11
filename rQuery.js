@@ -1,8 +1,8 @@
 (function () {
+    'use strict';
+    var $ = function (selector) {
 
-    $ = function (selector) {
-
-        if ( !(this instanceof $) ) {
+        if ( ! (this instanceof $) ) {
             return new $(selector);
         }
 
@@ -17,9 +17,7 @@
         for (var i = 0; i < elements.length; i++) {
             this[i] = elements[i];
         }
-        this.length = elements.length; // 'this' refers to the object calling the '$' function
-        // Could also just use Array.prototype.push.apply(this, elements);
-        // 'push' does the same stuff as the code above, but maybe harder to comprehend
+        this.length = elements.length;
     };
 
     // Method on '$' object -- copies over values from a defined object over to target object
@@ -151,7 +149,7 @@
                 return getText(this[0].childNodes);
             }
         },
-        
+
         // FIND: Returns a list of all the child nodes of the selected element
         // e.g. $('div').find('img'); returns an array of all images inside all divs bound to an instance of '$'
         find: function (selector) {
@@ -265,9 +263,15 @@
 
         // Events
         bind: function (eventName, handler) {
+            $.each(this, function(i, element) {
+                element.addEventListener(eventName, handler, false);
+            });
         },
 
         unbind: function (eventName, handler) {
+            $.each(this, function(i, element) {
+                element.removeEventListener(eventName, handler, false);
+            });
         },
 
         has: function (selector) {
@@ -281,7 +285,7 @@
 
             return $(elements);
         },
-        
+
         on: function (eventType, selector, handler) {
             return this.bind(eventType, function (ev) {
                 var cur = ev.target;
@@ -293,19 +297,39 @@
                 } while (cur && cur !== ev.currentTarget);
             });
         },
-        off: function (eventType, selector, handler) {
+
+        off: function(eventType, selector, handler) {
+          return $.each(this, function(i, element) {
+            var events = $([ element ]).data("events");
+            if (events[eventType] && events[eventType][selector]) {
+              var delegates = events[eventType][selector], i = 0;
+              while (i < delegates.length) {
+                if (delegates[i].handler === handler) {
+                  element.removeEventListener(eventType, delegates[i].delegator, false);
+                  delegates.splice(i, 1);
+                } else {
+                  i++;
+                }
+              }
+            }
+          });
         },
+
         data: function (propName, data) {
         },
+
         addClass: function (className) {
         },
+
         removeClass: function (className) {
         },
+
         append: function (element) {
         }
     });
 
     $.buildFragment = function (html) {
     };
+
 
 })();
