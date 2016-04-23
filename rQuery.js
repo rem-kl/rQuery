@@ -1,4 +1,5 @@
 (function() {
+
   $ = function(selector) {};
 
   $.extend = function(target, object) {};
@@ -70,4 +71,5 @@
   });
 
   $.buildFragment = function(html) {};
+  
 })();
