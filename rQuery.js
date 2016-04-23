@@ -2,14 +2,22 @@
 
   $ = function(selector) {};
 
-  $.extend = function(target, object) {};
-
-  // Static methods
-  var isArrayLike = function(obj) {};
+  $.extend = function(target, object) {
+    for (var key in object) {
+      if (object.hasOwnProperty(key)) {
+          target[key] = object[key];
+      }
+    }
+    return target;
+  };
 
   $.extend($, {
-    isArray: function(obj) {},
-    each: function(collection, cb) {},
+    isArray: function(obj) {
+      return Array.isArray(obj);
+    },
+    each: function(collection, cb) {
+
+    },
     makeArray: function(arr) {},
     proxy: function(fn, context) {}
   });
@@ -71,5 +79,16 @@
   });
 
   $.buildFragment = function(html) {};
-  
+
+  // Static methods
+  function isArrayLike(obj) {
+    if (obj.length === 'number') {
+      if (obj.length === 0)
+        return true;
+      else
+        return (obj.length - 1) in obj;
+    }
+    return false;
+  }
+
 })();
