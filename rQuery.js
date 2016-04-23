@@ -16,7 +16,20 @@
       return Array.isArray(obj);
     },
     each: function(collection, cb) {
-
+      if (isArrayLike(collection)) {
+        for (var i = 0; i < collection.length; i++) {
+          var value = collection[i];
+          cb.call(value, i, value);
+        }
+      }
+      else {
+        for (var key in collection) {
+          if (collection.hasOwnProperty(key)) {
+            cb.call(collection[key], key, collection[key]);
+          }
+        }
+      }
+      return collection;
     },
     makeArray: function(arr) {},
     proxy: function(fn, context) {}
@@ -82,7 +95,7 @@
 
   // Static methods
   function isArrayLike(obj) {
-    if (obj.length === 'number') {
+    if (typeof obj.length === 'number') {
       if (obj.length === 0)
         return true;
       else
