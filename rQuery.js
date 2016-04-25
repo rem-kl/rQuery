@@ -31,8 +31,19 @@
       }
       return collection;
     },
-    makeArray: function(arr) {},
-    proxy: function(fn, context) {}
+    makeArray: function(arr) {
+      if ($.isArray(arr)) return arr;
+      var result = [];
+      $.each(arr, function(i, value) {
+        result.push(value);
+      })
+      return result;
+    },
+    proxy: function(fn, context) {
+      return function() {
+        return fn.apply(context, arguments);
+      }
+    }
   });
 
   $.extend($.prototype, {
