@@ -1,11 +1,14 @@
 (function() {
 
   $ = function(selector) {
-    var elements = document.querySelectorAll(selector);
-    this.length = elements.length;
-    for (var i = 0; i < elements.lengths; i++) {
-      this.i = element[i];
+    var elements;
+    if (typeof selector === 'string') {
+      elements = document.querySelectorAll(selector);
+    } else if($.isArray(selector)) {
+      elements = selector;
     }
+    // copy over elements into the jQuery object
+    [].push.apply(this, elements);
   };
 
   $.extend = function(target, object) {
