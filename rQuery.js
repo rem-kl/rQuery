@@ -1,6 +1,12 @@
 (function() {
 
-  $ = function(selector) {};
+  $ = function(selector) {
+    var elements = document.querySelectorAll(selector);
+    this.length = elements.length;
+    for (var i = 0; i < elements.lengths; i++) {
+      this.i = element[i];
+    }
+  };
 
   $.extend = function(target, object) {
     for (var key in object) {
