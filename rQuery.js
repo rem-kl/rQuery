@@ -56,7 +56,16 @@
   });
 
   $.extend($.prototype, {
-    html: function(newHtml) {},
+    html: function(newHtml) {
+      html: function(newHtml) {
+        if (arguments.length) {
+          return $.each(this, function(i, element) {
+            element.innerHTML = newHtml;
+          });
+        } else {
+          return this[0].innerHTML;
+        }
+    },
     val: function(newVal) {},
     text: function(newText) {},
     find: function(selector) {},
