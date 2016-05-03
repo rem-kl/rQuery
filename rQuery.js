@@ -66,7 +66,7 @@
             element.innerHTML = newHtml;
           });
         } else {
-          return this[0].innerHTML;
+          return this[0] && this[0].innerHTML;
         }
     },
     val: function(newVal) {
