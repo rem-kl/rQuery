@@ -1,6 +1,9 @@
 (function() {
 
   $ = function(selector) {
+    if (!(this instanceof $)) {
+      return new $(selector);
+    }
     var elements;
     if (typeof selector === 'string') {
       elements = document.querySelectorAll(selector);
