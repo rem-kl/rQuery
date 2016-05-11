@@ -78,7 +78,17 @@
         return this[0].value;
       }
     },
-    text: function(newText) {},
+    text: function(newText) {
+      if (arguments.length) {
+        this.html('');
+        return $.each(this, function(i, element) {
+          var text = document.createTextNode(newText);
+          element.appendChild(text);
+        });
+      else {
+        
+      }
+    },
     find: function(selector) {},
     next: function() {},
     prev: function() {},
