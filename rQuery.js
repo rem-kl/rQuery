@@ -85,8 +85,9 @@
           var text = document.createTextNode(newText);
           element.appendChild(text);
         });
+      }
       else {
-        
+        return this[0] && getText(this[0]);
       }
     },
     find: function(selector) {},
@@ -152,6 +153,18 @@
         return (obj.length - 1) in obj;
     }
     return false;
+  }
+
+  function getText(element) {
+    var text = '';
+    $.each(element.childNodes, function(i, node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        text += node.nodeValue;
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        text += getText(node);
+      }
+    });
+    return text;
   }
 
 })();
