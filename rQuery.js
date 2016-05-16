@@ -60,14 +60,13 @@
 
   $.extend($.prototype, {
     html: function(newHtml) {
-      html: function(newHtml) {
-        if (arguments.length) {
-          return $.each(this, function(i, element) {
-            element.innerHTML = newHtml;
-          });
-        } else {
-          return this[0] && this[0].innerHTML;
-        }
+      if (arguments.length) {
+        return $.each(this, function(i, element) {
+          element.innerHTML = newHtml;
+        });
+      } else {
+        return this[0] && this[0].innerHTML;
+      }
     },
     val: function(newVal) {
       if (arguments.length) {
