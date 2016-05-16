@@ -89,7 +89,15 @@
         return this[0] && getText(this[0]);
       }
     },
-    find: function(selector) {},
+    find: function(selector) {
+      var elements = [];
+      // find the elements defined by the selector for each child element
+      $.each(this, function(i, element) {
+        var els = element.querySelectorAll(selector);
+        [].push.apply(elements, els);
+      });
+      return $(elements);
+    },
     next: function() {},
     prev: function() {},
     parent: function() {},
