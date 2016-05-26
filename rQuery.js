@@ -100,7 +100,7 @@
     },
     next: function() {
       var elements = [];
-      
+
       $.each(this, function(i, element) {
         var current = element.nextSibling;
         while (current && current.nodeType !== Node.ELEMENT_NODE) {
@@ -113,7 +113,21 @@
 
       return $(elements);
     },
-    prev: function() {},
+    prev: function() {
+      var elements = [];
+
+      $.each(this, function(i, element) {
+        var current = element.previousSibling;
+        while (current && current.nodeType !== Node.ELEMENT_NODE) {
+          current = current.previousSibling
+        }
+        if (current) {
+          elements.push(current)
+        }
+      });
+
+      return $(elements);
+    },
     parent: function() {},
     children: function() {},
     attr: function(attrName, value) {},
