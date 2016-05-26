@@ -98,7 +98,21 @@
       });
       return $(elements);
     },
-    next: function() {},
+    next: function() {
+      var elements = [];
+      
+      $.each(this, function(i, element) {
+        var current = element.nextSibling;
+        while (current && current.nodeType !== Node.ELEMENT_NODE) {
+          current = current.nextSibling
+        }
+        if (current) {
+          elements.push(current)
+        }
+      });
+
+      return $(elements);
+    },
     prev: function() {},
     parent: function() {},
     children: function() {},
@@ -175,3 +189,9 @@
   }
 
 })();
+
+
+// Function.prototype.method = function(name, fn) {
+// this.prototype[name] = fn;
+// return this;
+// };
