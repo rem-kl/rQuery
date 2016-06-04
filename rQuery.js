@@ -135,7 +135,17 @@
       });
       return $(elements);
     },
-    children: function() {},
+    children: function() {
+      var elements = [];
+      $.each(this, function(i, el) {
+        if (el.children) {
+          for (var i = 0; i < el.children.length; i++) {
+            elements.push(el.children[i])
+          }
+        }
+      });
+      return $(elements);
+    },
     attr: function(attrName, value) {},
     css: function(cssPropName, value) {},
     width: function() {},
