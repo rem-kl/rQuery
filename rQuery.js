@@ -218,6 +218,25 @@
     return text;
   }
 
+  function createTraverserFunction(callback) {
+    return function() {
+      var elements = [];
+      var callbackArgs = arguments;
+
+      $.each(this, function(i, el) {
+        var returnValue = cb.apply(el, callbackArgs); // e.g element.parentNode
+
+        if (isArrayLike(returnValue)) {
+          [].push.apply(elements, returnValue)
+        } else if(returnValue) {
+          elements.push(returnValue)
+        }
+      })
+
+      return $(elements);
+    }
+  }
+
 })();
 
 
