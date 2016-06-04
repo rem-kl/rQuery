@@ -128,7 +128,13 @@
 
       return $(elements);
     },
-    parent: function() {},
+    parent: function() {
+      var elements = [];
+      $.each(this, function(i, el) {
+        elements.push(el.parentNode);
+      });
+      return $(elements);
+    },
     children: function() {},
     attr: function(attrName, value) {},
     css: function(cssPropName, value) {},
