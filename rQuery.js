@@ -4,13 +4,14 @@
       return new $(selector)
     }
     var elements
+
     if (typeof selector === 'string') {
       elements = document.querySelectorAll(selector)
     } else if ($.isArray(selector)) {
       elements = selector
     }
-    // copy over elements into the jQuery object
-    ;[].push.apply(this, elements)
+
+    Array.prototype.push.apply(this, elements)
   }
 
   $.extend = function(target, object) {
@@ -185,8 +186,12 @@
     data: function(propName, data) {},
 
     // Extra
-    addClass: function(className) {},
-    removeClass: function(className) {},
+    addClass: function(className) {
+      this[0].classList.add(className)
+    },
+    removeClass: function(className) {
+      this[0].classList.remove(className)
+    },
     append: function(element) {}
   })
 
