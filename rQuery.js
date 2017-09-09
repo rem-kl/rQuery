@@ -192,7 +192,9 @@
     removeClass: function(className) {
       this[0].classList.remove(className)
     },
-    append: function(element) {}
+    append: function(element) {
+      this[0].appendChild(element)
+    }
   })
 
   $.buildFragment = function(html) {}
