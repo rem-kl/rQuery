@@ -154,9 +154,12 @@
         left: offset.left + window.pageXOffset
       }
     },
-    hide: function() {},
-    show: function() {},
-
+    hide: function() {
+      this[0].style.display = 'none'
+    },
+    show: function() {
+      this[0].style.display = 'block'
+    },
     // Events
     bind: function(eventName, handler) {},
     unbind: function(eventName, handler) {},
